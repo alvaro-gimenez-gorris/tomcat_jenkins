@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  dev_tomcat_8_5:
+    build: ./tomcat-8.5
+    container_name: dev_tomcat_8_5
+    volumes:
+      - ./curso_jenkins.war:/usr/local/tomcat/webapps/curso_jenkins.war
+    ports:
+      - "8880:8080"
+  pre_tomcat_8_5:
+    build: ./tomcat-8.5
+    container_name: pre_tomcat_8_5
+    volumes:
+        - ./curso_jenkins.war:/usr/local/tomcat/webapps/curso_jenkins.war
+    ports:
+      - "8881:8080"
+  pro_tomcat_8_5:
+    build: ./tomcat-8.5
+    container_name: pro_tomcat_8_5
+    volumes:
+      - ./curso_jenkins.war:/usr/local/tomcat/webapps/curso_jenkins.war
+    ports:
+      - "8882:8080"
