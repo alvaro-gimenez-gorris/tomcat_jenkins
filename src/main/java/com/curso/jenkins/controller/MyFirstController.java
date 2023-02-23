@@ -8,6 +8,6 @@ public class MyFirstController {
 
     @GetMapping("/hola")
     public String controller(){
-        return "Este es el primer servicio de la api";
+        return "Hola desde el servidor de desarrollo";
     }
 }
