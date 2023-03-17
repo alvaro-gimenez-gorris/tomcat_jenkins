@@ -15,7 +15,7 @@ node(){
 	//archiveArtifacts artifacts 'target/*.war'
   }
   stage('Code Deployment'){
-	deploy adapters: [tomcat9(credentialsId: 'TomcatCreds', path: '', url: 'http://127.0.0.1:8882/')], contextPath: 'curso_jenkins', onFailure: false, war: 'target/*.war'
+	deploy adapters: [tomcat9(credentialsId: 'TomcatCreds', path: '', url: 'http://192.168.1.145:8882/')], contextPath: 'curso_jenkins', onFailure: false, war: 'target/*.war'
   }
   stage('Notification'){
 		//emailext (
