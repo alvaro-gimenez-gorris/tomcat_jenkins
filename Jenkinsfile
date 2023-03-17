@@ -12,7 +12,7 @@ node(){
 	// sh "mvn sonar:sonar -Dsonar.host.url:http://ip:puerto -Dsonar.login=id"
   }
   stage('Archive Artifacts'){
-	archiveArtifacts artifacts 'target/*.war'
+	//archiveArtifacts artifacts 'target/*.war'
   }
   stage('Code Deployment'){
 	deploy adapters: [tomcat9(credentialsId: 'TomcatCreds', path: '', url: 'http://127.0.0.1:8882/')], contextPath: 'curso_jenkins', onFailure: false, war: 'target/*.war'
