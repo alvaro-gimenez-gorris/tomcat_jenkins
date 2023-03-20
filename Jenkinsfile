@@ -27,9 +27,17 @@ pipeline {
                 script {
                     println("Comprobando si hay cambios en el repositorio...")
                     //checkout changelog: true, poll: false, scm: scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '0dc4562c-e6a8-41e7-a464-95a3401aab54', url: 'https://github.com/alvaro-gimenez-gorris/tomcat_jenkins']])
-                    echo 'Pulling...' + env.BRANCH_NAME
+                    
                     checkout scm
-                    echo 'Pulling...' + env.BRANCH_NAME
+                    
+                    println("Nombre de la rama actual antes: " + GIT_BRANCH)
+                    
+                    GIT_BRANCH = sh (
+                        script: 'git rev-parse --abbrev-ref HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    println("Nombre de la rama actual después: " + GIT_BRANCH)
                     
                     changeCount = currentBuild.changeSets.size()
             		println("Número de cambios encontrados: " + changeCount)
