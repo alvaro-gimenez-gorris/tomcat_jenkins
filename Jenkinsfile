@@ -1,5 +1,16 @@
 def skipRemainingStages = false
-def GIT_BRANCH = 'Develop'
+
+def tomcat_dev = 'http://192.168.1.145:8880/'
+def tomcat_pre = 'http://192.168.1.145:8881/'
+def tomcat_pro = 'http://192.168.1.145:8882/'
+def current_profile = tomcat_dev
+
+def isProProfile(){
+    return "${env.JOB_NAME}".contains("_pro")
+}
+def isPreProfile(){
+    return "${env.JOB_NAME}".contains("_pre")
+}
 
 pipeline {
     agent any
@@ -7,18 +18,24 @@ pipeline {
     triggers{ cron('H/15 * * * *') }
     
     stages {
-        stage("Check Current Branch Name"){
+        stage("Set Tomcat Profile"){
             steps{
                 script {
-                    echo 'Pulling...' + env.BRANCH_NAME
-                    println("Nombre de la rama actual antes: " + GIT_BRANCH)
+                    println("Nombre del job: ${env.JOB_NAME}")
                     
-                    GIT_BRANCH = sh (
-                        script: 'git rev-parse --abbrev-ref HEAD',
-                        returnStdout: true
-                    ).trim()
-
-                    println("Nombre de la rama actual después: " + GIT_BRANCH)
+                    if(isProProfile()){
+                        current_profile = tomcat_pro
+                        println("Pipeline del entorno de producción")
+                        return
+                    }
+                    
+                    if(isPreProfile()){
+                        current_profile = tomcat_pre
+                        println("Pipeline del entorno de preproducción")
+                        return
+                    }
+                    
+                    println("Pipeline del entorno de desarrollo")
                 }
             }
         }
@@ -27,17 +44,7 @@ pipeline {
                 script {
                     println("Comprobando si hay cambios en el repositorio...")
                     //checkout changelog: true, poll: false, scm: scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '0dc4562c-e6a8-41e7-a464-95a3401aab54', url: 'https://github.com/alvaro-gimenez-gorris/tomcat_jenkins']])
-                    
                     checkout scm
-                    
-                    println("Nombre de la rama actual antes: " + GIT_BRANCH)
-                    
-                    GIT_BRANCH = sh (
-                        script: 'git rev-parse --abbrev-ref HEAD',
-                        returnStdout: true
-                    ).trim()
-
-                    println("Nombre de la rama actual después: " + GIT_BRANCH)
                     
                     changeCount = currentBuild.changeSets.size()
             		println("Número de cambios encontrados: " + changeCount)
@@ -108,7 +115,7 @@ pipeline {
             steps {
                 script {
                     println "Desplegando el war en el tomcat..."
-                    deploy adapters: [tomcat9(credentialsId: 'TomcatCreds', path: '', url: 'http://192.168.1.145:8882/')], contextPath: 'mi_curso_jenkins', onFailure: false, war: 'target/*.war'
+                    deploy adapters: [tomcat9(credentialsId: 'TomcatCreds', path: '', url: current_profile)], contextPath: 'mi_curso_jenkins', onFailure: false, war: 'target/*.war'
                 }
             }
         }
