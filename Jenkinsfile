@@ -14,8 +14,7 @@ pipeline {
                     println("Nombre de la rama actual antes: " + GIT_BRANCH)
                     
                     GIT_BRANCH = sh (
-                        //script: 'git rev-parse --abbrev-ref HEAD',
-                        script: 'git branch --show-current',
+                        script: 'git rev-parse --abbrev-ref HEAD',
                         returnStdout: true
                     ).trim()
 
