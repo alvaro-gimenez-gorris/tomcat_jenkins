@@ -5,6 +5,7 @@ node(){
 	// comprobamos si hay cambios en la rama
 	script {
         	changeCount = currentBuild.changeSets.size()
+		println("Número de cambios encontrados: " + changeCount)
 		if(changeCount > 0) {
 			println("Cambios encontrados en la rama. Seguimos con el pipeline")
 		}
