@@ -1,4 +1,5 @@
 def skipRemainingStages = false
+def GIT_BRANCH = 'Develop'
 
 pipeline {
     agent any
@@ -6,6 +7,22 @@ pipeline {
     triggers{ cron('H/15 * * * *') }
     
     stages {
+        stage("Check Current Branch Name"){
+            steps{
+                script {
+                    
+                    println("Nombre de la rama actual antes: " + GIT_BRANCH)
+                    
+                    GIT_BRANCH = sh (
+                        //script: 'git rev-parse --abbrev-ref HEAD',
+                        script: 'git branch --show-current',
+                        returnStdout: true
+                    ).trim()
+
+                    println("Nombre de la rama actual después: " + GIT_BRANCH)
+                }
+            }
+        }
         stage("Code Checkout") {
             steps {
                 script {
