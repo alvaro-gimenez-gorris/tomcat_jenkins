@@ -20,6 +20,11 @@ class JenkinsApplicationTests {
 
 		assertEquals(1, 1);
 	}
+	@Test
+	void contextLoadsThree() {
+
+		assertEquals(1, 1);
+	}
 	/*@Test
 	void failedTest() {
 
