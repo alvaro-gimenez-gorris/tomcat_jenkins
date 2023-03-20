@@ -26,7 +26,8 @@ pipeline {
             steps {
                 script {
                     println("Comprobando si hay cambios en el repositorio...")
-                    checkout changelog: true, poll: false, scm: scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '0dc4562c-e6a8-41e7-a464-95a3401aab54', url: 'https://github.com/alvaro-gimenez-gorris/tomcat_jenkins']])
+                    //checkout changelog: true, poll: false, scm: scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '0dc4562c-e6a8-41e7-a464-95a3401aab54', url: 'https://github.com/alvaro-gimenez-gorris/tomcat_jenkins']])
+                    Checkout SCM
                     
                     changeCount = currentBuild.changeSets.size()
             		println("Número de cambios encontrados: " + changeCount)
