@@ -10,7 +10,9 @@ node(){
 			println("Cambios encontrados en la rama. Seguimos con el pipeline")
 		}
 		else {
-			error "Finalizamos el despliegue porque no se han encontrado cambios"
+			println("Finalizamos el despliegue porque no se han encontrado cambios")
+			currentBuild.result = 'SUCCESS'
+   			return
 		}
         }
   }
