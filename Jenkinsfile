@@ -10,7 +10,7 @@ pipeline {
         stage("Check Current Branch Name"){
             steps{
                 script {
-                    
+                    echo 'Pulling...' + env.BRANCH_NAME
                     println("Nombre de la rama actual antes: " + GIT_BRANCH)
                     
                     GIT_BRANCH = sh (
