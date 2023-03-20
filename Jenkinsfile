@@ -11,8 +11,8 @@ node(){
 		}
 		else {
 			println("Finalizamos el despliegue porque no se han encontrado cambios")
-			currentBuild.result = 'SUCCESS'
-   			return
+			currentBuild.rawBuild.result = Result.ABORTED
+    			throw new hudson.AbortException('Guess what!')
 		}
         }
   }
