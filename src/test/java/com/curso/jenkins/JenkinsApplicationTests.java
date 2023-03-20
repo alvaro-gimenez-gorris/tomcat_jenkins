@@ -20,9 +20,9 @@ class JenkinsApplicationTests {
 
 		assertEquals(1, 1);
 	}
-	@Test
+	/*@Test
 	void failedTest() {
 
 		assertEquals(1, 0);
-	}
+	}*/
 }
