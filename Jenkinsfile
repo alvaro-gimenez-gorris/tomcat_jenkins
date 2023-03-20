@@ -3,13 +3,15 @@ node(){
 	checkout changelog: false, poll: false, scm: scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '0dc4562c-e6a8-41e7-a464-95a3401aab54', url: 'https://github.com/alvaro-gimenez-gorris/tomcat_jenkins']])
 	
 	// comprobamos si hay cambios en la rama
-	result = sh (script: "git log -1 | grep '\\[ci skip\\]'", returnStatus: true) 
-	if(result != 0) {
-		println("Cambios encontrados en la rama. Seguimos con el pipeline")
-	}
-	else {
-    		error "Finalizamos el despliegue porque no se han encontrado cambios"
-	}
+	script {
+        	changeCount = currentBuild.changeSets.size()
+		if(changeCount > 0) {
+			println("Cambios encontrados en la rama. Seguimos con el pipeline")
+		}
+		else {
+			error "Finalizamos el despliegue porque no se han encontrado cambios"
+		}
+        }
   }
   stage('Build'){
 	sh "mvn clean install -Dmaven.test.skip=true"
